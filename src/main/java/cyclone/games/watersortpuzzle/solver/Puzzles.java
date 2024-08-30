@@ -4,7 +4,13 @@ import java.util.Arrays;
 
 import static cyclone.games.watersortpuzzle.solver.Color.*;
 
+/**
+ * A set of puzzles from different games.
+ */
 public class Puzzles {
+
+    private Puzzles() {
+    }
 
     static Puzzle AUG11_CHALLENGE = new Puzzle(new Color[][]{
             {YELLOW, DARKPURPLE, GREEN, DARKPURPLE, WHITE, GREEN},
@@ -16,7 +22,7 @@ public class Puzzles {
             {GRAY, GRAY, PURPLE, WHITE, DARKRED, DARKRED},
             emptyTube(6),
             emptyTube(6),
-    }, Task.SOLE_COLOR, DARKRED);
+    }, WinCondition.SOLE_COLOR, DARKRED);
 
     // 40 moves < 45 dev
     static Puzzle AUG13_CHALLENGE = new Puzzle(new Color[][]{

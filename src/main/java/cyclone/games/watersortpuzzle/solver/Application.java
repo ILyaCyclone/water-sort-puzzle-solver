@@ -7,12 +7,13 @@ import java.util.stream.Collectors;
 public class Application {
 
     public static void main(String[] args) {
-//        Puzzle puzzle = Puzzles.AUG18_EASY;
-        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
+        Puzzle puzzle = Puzzles.AUG18_EASY;
+//        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
 
         PrintStream out = System.out;
 
-        Solver solver = new Solver();
+//        Solver solver = new SingleThreadedSolver();
+        Solver solver = new MultiThreadedSolver();
 
         long startNano = System.nanoTime();
         Solution solution = solver.solve(puzzle);
@@ -27,6 +28,7 @@ public class Application {
         }
 
         List<int[]> moves = solution.moves();
+        TubesManipulator tubesManipulator = new TubesManipulator();
         out.println("==================================================");
         out.println("Best solution in " + moves.size() + " moves: [" +
                 moves.stream().map(fromto -> (fromto[0] + 1) + "-" + (fromto[1] + 1))
@@ -40,7 +42,7 @@ public class Application {
         for (int logMoveIndex = 0; logMoveIndex < moves.size(); logMoveIndex++) {
             int[] fromto = moves.get(logMoveIndex);
             out.println((logMoveIndex + 1) + ". move " + (fromto[0] + 1) + " to " + (fromto[1] + 1));
-            logTubes = solver.makeAMove(logTubes, fromto[1], fromto[0]);
+            logTubes = tubesManipulator.makeAMove(logTubes, fromto[1], fromto[0]);
 
             out.println("--------------------------------------------------");
             printer.log(logTubes);

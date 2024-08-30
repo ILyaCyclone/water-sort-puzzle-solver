@@ -2,14 +2,17 @@ package cyclone.games.watersortpuzzle.solver;
 
 import java.util.Arrays;
 
+/**
+ * One puzzle and its winCondition.
+ */
 public record Puzzle(
         Color[][] tubes,
-        Task task,
+        WinCondition winCondition,
         Color soleColor
 ) {
 
     public Puzzle(Color[][] tubes) {
-        this(tubes, Task.STANDARD, null);
+        this(tubes, WinCondition.STANDARD, null);
     }
 
     @Override
@@ -20,14 +23,14 @@ public record Puzzle(
         Puzzle puzzle = (Puzzle) o;
 
         if (!Arrays.deepEquals(tubes, puzzle.tubes)) return false;
-        if (task != puzzle.task) return false;
+        if (winCondition != puzzle.winCondition) return false;
         return soleColor == puzzle.soleColor;
     }
 
     @Override
     public int hashCode() {
         int result = Arrays.deepHashCode(tubes);
-        result = 31 * result + (task != null ? task.hashCode() : 0);
+        result = 31 * result + (winCondition != null ? winCondition.hashCode() : 0);
         result = 31 * result + (soleColor != null ? soleColor.hashCode() : 0);
         return result;
     }
