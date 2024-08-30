@@ -8,6 +8,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * Main business logic.
+ * Solve puzzle using multiple threads.
+ */
 public class MultiThreadedSolver implements Solver {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();

@@ -3,6 +3,10 @@ package cyclone.games.watersortpuzzle.solver;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Main business logic.
+ * Solve puzzle using single thread.
+ */
 public class SingleThreadedSolver implements Solver {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();

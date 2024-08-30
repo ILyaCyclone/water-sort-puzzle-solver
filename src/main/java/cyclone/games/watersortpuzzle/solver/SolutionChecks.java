@@ -1,5 +1,8 @@
 package cyclone.games.watersortpuzzle.solver;
 
+/**
+ * Create appropriate solution check.
+ */
 public class SolutionChecks {
 
     private SolutionChecks() {

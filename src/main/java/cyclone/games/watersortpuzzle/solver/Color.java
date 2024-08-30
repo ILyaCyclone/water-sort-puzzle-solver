@@ -1,5 +1,8 @@
 package cyclone.games.watersortpuzzle.solver;
 
+/**
+ * One unit of space, occupied with a color substance or empty.
+ */
 enum Color {
     EMPTY,
     RED, GREEN, BLUE, YELLOW, WHITE, GRAY, ORANGE, PURPLE, DARKRED, DARKBLUE,

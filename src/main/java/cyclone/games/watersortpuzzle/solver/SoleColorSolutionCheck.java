@@ -2,6 +2,9 @@ package cyclone.games.watersortpuzzle.solver;
 
 import java.util.Arrays;
 
+/**
+ * Check SOLE_COLOR win condition.
+ */
 public class SoleColorSolutionCheck implements SolutionCheck {
 
     private final Color soleColor;

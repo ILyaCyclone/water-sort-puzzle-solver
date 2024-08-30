@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 import static cyclone.games.watersortpuzzle.solver.Color.EMPTY;
 
+/**
+ * Check STANDARD win condition.
+ */
 public class StandardSolutionCheck implements SolutionCheck {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();

@@ -8,6 +8,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Validate puzzle.
+ * Will throw exception if puzzle is written down with errors.
+ */
 public class PuzzleValidator {
 
     public void validate(Puzzle puzzle) {

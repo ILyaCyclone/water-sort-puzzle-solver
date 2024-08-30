@@ -3,7 +3,7 @@ package cyclone.games.watersortpuzzle.solver;
 import java.util.Arrays;
 
 /**
- * One puzzle and its winCondition.
+ * One puzzle and its win condition.
  */
 public record Puzzle(
         Color[][] tubes,
