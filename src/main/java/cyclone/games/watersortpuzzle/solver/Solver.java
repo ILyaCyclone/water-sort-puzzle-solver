@@ -15,6 +15,8 @@ public class Solver {
     private static int capacity;
     private static final Map<PuzzleState, Integer> states = new HashMap<>();
 
+    private SolutionVerifier solutionVerifier;
+
     public Solution solve(Puzzle puzzle) {
         Color[][] tubes = puzzle.tubes();
 
@@ -49,6 +51,8 @@ public class Solver {
                     ballsCountErrorJoiner);
 
 
+        solutionVerifier = SolutionVerifiers.forPuzzle(puzzle);
+
         states.put(new PuzzleState(tubes), 0);
 
 //        log(tubes);
@@ -79,7 +83,7 @@ public class Solver {
 //                log(tubes);
 //                System.out.println(movesMade + ". move " + (i + 1) + " to " + (possibleMove + 1));
 //                System.out.println("----------------------------------------");
-                        if (isSolved(tryNewTubes)) {
+                        if (solutionVerifier.isSolved(tryNewTubes)) {
 //                    log(tryNewTubes);
                             solved = true;
                             if (movesMade < bestMovesMade) {
@@ -199,24 +203,4 @@ public class Solver {
     private int countBalls(Color[] tube) {
         return (int) Arrays.stream(tube).filter(color -> color != EMPTY).count();
     }
-
-    private boolean isSolved(Color[][] tubes) {
-        for (Color[] tube : tubes) {
-            if (Arrays.stream(tube).allMatch(color -> color == EMPTY)) continue;
-            if (countBalls(tube) != capacity) return false;
-
-            if (Arrays.stream(tube).distinct()
-                    .filter(color -> color != EMPTY)
-                    .count() > 1) return false;
-        }
-        return true;
-    }
-
-    private boolean isSolved(Color[][] tubes, Color soleColor) {
-        for (Color[] tube : tubes) {
-            if (Arrays.stream(tube).filter(color -> color == soleColor).count() == capacity) return true;
-        }
-        return false;
-    }
-
 }

@@ -6,7 +6,6 @@ import static cyclone.games.watersortpuzzle.solver.Color.*;
 
 public class Puzzles {
 
-    // [one color=DARKRED]
     static Puzzle AUG11_CHALLENGE = new Puzzle(new Color[][]{
             {YELLOW, DARKPURPLE, GREEN, DARKPURPLE, WHITE, GREEN},
             {GRAY, WHITE, WHITE, PURPLE, WHITE, DARKRED},
@@ -17,7 +16,7 @@ public class Puzzles {
             {GRAY, GRAY, PURPLE, WHITE, DARKRED, DARKRED},
             emptyTube(6),
             emptyTube(6),
-    });
+    }, Task.SOLE_COLOR, DARKRED);
 
     // 40 moves < 45 dev
     static Puzzle AUG13_CHALLENGE = new Puzzle(new Color[][]{
