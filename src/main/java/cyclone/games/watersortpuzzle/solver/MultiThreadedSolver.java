@@ -6,16 +6,15 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class MultiThreadedSolver implements Solver {
 
-    private final Map<PuzzleState, Integer> states = new ConcurrentHashMap<>();
     private final TubesManipulator tubesManipulator = new TubesManipulator();
+    private final PuzzleValidator puzzleValidator = new PuzzleValidator();
     private SolutionCheck solutionCheck;
 
+    private final Map<PuzzleState, Integer> states = new ConcurrentHashMap<>();
     private List<int[]> bestSolution;
     private final AtomicInteger bestMovesMade = new AtomicInteger(Integer.MAX_VALUE);
     private int solutions = 0;
@@ -24,47 +23,17 @@ public class MultiThreadedSolver implements Solver {
 
     @Override
     public Solution solve(Puzzle puzzle) {
-        Color[][] tubes = puzzle.tubes();
-        int capacity = tubes[0].length;
-
-        if (Arrays.stream(tubes).map(tube -> tube.length).distinct().count() > 1) {
-            int[] longerTube = IntStream.range(0, tubes.length)
-                    .mapToObj(i -> new int[]{i, tubes[i].length})
-                    .max(Comparator.comparingInt(pair -> pair[1]))
-                    .get();
-
-            throw new IllegalArgumentException("Unequal tubes length: tube " + (longerTube[0] + 1) + " has length " + longerTube[1]);
-        }
-
-
-        // check color numbers according to tubes length
-        Map<Color, Integer> totalBallsCount = Arrays.stream(tubes).flatMap(Arrays::stream)
-                .collect(Collectors.groupingBy(
-                        Function.identity(),
-                        Collectors.collectingAndThen(Collectors.counting(), Long::intValue)
-                ));
-
-        boolean ballsCountError = false;
-        StringJoiner ballsCountErrorJoiner = new StringJoiner("; ");
-        for (Map.Entry<Color, Integer> colorCount : totalBallsCount.entrySet()) {
-            if (colorCount.getValue() % capacity != 0) {
-                ballsCountError = true;
-                ballsCountErrorJoiner.add(colorCount.getKey() + ": " + colorCount.getValue());
-            }
-        }
-        if (ballsCountError)
-            throw new IllegalArgumentException("Color count is not divisible by tubes' length (" + capacity + "): " +
-                    ballsCountErrorJoiner);
+        puzzleValidator.validate(puzzle);
 
         solutionCheck = SolutionChecks.forPuzzle(puzzle);
 
+        Color[][] tubes = puzzle.tubes();
         states.put(new PuzzleState(tubes), 0);
 
-//        log(tubes);
+//        printer.log(tubes);
 //        System.out.println("=======================================");
 
         ForkJoinPool fjp = new ForkJoinPool();
-
         fjp.invoke(new MoveTask(tubes, Collections.emptyList()));
         fjp.shutdown();
 
