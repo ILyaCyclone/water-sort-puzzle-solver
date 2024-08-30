@@ -14,12 +14,11 @@ public class MultiThreadedSolver implements Solver {
 
     private final Map<PuzzleState, Integer> states = new ConcurrentHashMap<>();
     private final TubesManipulator tubesManipulator = new TubesManipulator();
+    private SolutionCheck solutionCheck;
 
     private List<int[]> bestSolution;
     private final AtomicInteger bestMovesMade = new AtomicInteger(Integer.MAX_VALUE);
     private int solutions = 0;
-
-    private SolutionVerifier solutionVerifier;
 
     private static final Object stdoutLock = new Object();
 
@@ -57,7 +56,7 @@ public class MultiThreadedSolver implements Solver {
             throw new IllegalArgumentException("Color count is not divisible by tubes' length (" + capacity + "): " +
                     ballsCountErrorJoiner);
 
-        solutionVerifier = SolutionVerifiers.forPuzzle(puzzle);
+        solutionCheck = SolutionChecks.forPuzzle(puzzle);
 
         states.put(new PuzzleState(tubes), 0);
 
@@ -111,7 +110,7 @@ public class MultiThreadedSolver implements Solver {
                         int movesMade = moves.size();
                         states.put(tryPuzzleState, movesMade);
 
-                        if (solutionVerifier.isSolved(tryNewTubes)) {
+                        if (solutionCheck.isSolved(tryNewTubes)) {
                             if (movesMade < bestMovesMade.get()) {
                                 // Update bestMovesMade if the current solution is better
                                 bestMovesMade.getAndUpdate(existingBest -> Math.min(existingBest, movesMade));

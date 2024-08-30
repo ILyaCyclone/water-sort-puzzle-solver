@@ -1,6 +1,6 @@
 package cyclone.games.watersortpuzzle.solver;
 
-public interface SolutionVerifier {
+public interface SolutionCheck {
 
     boolean isSolved(Color[][] tubes);
 

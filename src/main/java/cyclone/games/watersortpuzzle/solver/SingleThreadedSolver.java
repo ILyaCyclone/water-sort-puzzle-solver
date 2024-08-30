@@ -9,12 +9,12 @@ public class SingleThreadedSolver implements Solver {
 
     private final Map<PuzzleState, Integer> states = new HashMap<>();
     private final TubesManipulator tubesManipulator = new TubesManipulator();
+    private SolutionCheck solutionCheck;
 
     private List<int[]> bestSolution;
     private int bestMovesMade = Integer.MAX_VALUE;
     private int solutions = 0;
 
-    private SolutionVerifier solutionVerifier;
 
     @Override
     public Solution solve(Puzzle puzzle) {
@@ -51,7 +51,7 @@ public class SingleThreadedSolver implements Solver {
                     ballsCountErrorJoiner);
 
 
-        solutionVerifier = SolutionVerifiers.forPuzzle(puzzle);
+        solutionCheck = SolutionChecks.forPuzzle(puzzle);
 
         states.put(new PuzzleState(tubes), 0);
 
@@ -83,7 +83,7 @@ public class SingleThreadedSolver implements Solver {
 //                log(tubes);
 //                System.out.println(movesMade + ". move " + (i + 1) + " to " + (possibleMove + 1));
 //                System.out.println("----------------------------------------");
-                        if (solutionVerifier.isSolved(tryNewTubes)) {
+                        if (solutionCheck.isSolved(tryNewTubes)) {
 //                    log(tryNewTubes);
                             solved = true;
                             if (movesMade < bestMovesMade) {

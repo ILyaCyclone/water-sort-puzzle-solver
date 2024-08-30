@@ -2,11 +2,11 @@ package cyclone.games.watersortpuzzle.solver;
 
 import java.util.Arrays;
 
-public class SoleColorSolutionVerifier implements SolutionVerifier {
+public class SoleColorSolutionCheck implements SolutionCheck {
 
     private final Color soleColor;
 
-    public SoleColorSolutionVerifier(Color soleColor) {
+    public SoleColorSolutionCheck(Color soleColor) {
         this.soleColor = soleColor;
     }
 
