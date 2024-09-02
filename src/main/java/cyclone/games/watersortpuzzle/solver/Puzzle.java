@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * One puzzle and its win condition.
+ * Tubes' colors are written top-down.
  */
 public record Puzzle(
         Color[][] tubes,

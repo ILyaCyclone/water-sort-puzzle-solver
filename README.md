@@ -1,19 +1,46 @@
-# Water Sort Puzzle Solver
+# Water Sort Puzzle Algorithm
 
 An algorithm for solving "water sort puzzle" games.
 
 ## What is "water sort puzzle" game?
 
-A popular games type, mostly mobile or browser-based, where you need to sort colored liquids or balls into separate
-tubes.
-Usually you would want to solve the puzzle in minimal possible moves.
+"Water sort puzzle" games are a popular type of game, mostly found on mobile devices or browser-based platforms, where
+you need to sort colored liquids or balls into separate tubes. The goal is usually to solve the puzzle in the fewest
+possible moves.
 
 ## What is this project?
 
-This project is an algorithm for solving "water sort puzzle" games. Guarantees minimal possible moves.  
-Provides nice and visual output in result. Gradually outputs found solutions while continue looking for better variant.
+This project provides an algorithm for solving "water sort puzzle" games, guaranteeing solutions with the minimal
+possible moves while trying its best to be fast.  
+It features a simpler single-threaded variant and a more performant multithreaded variant.
+
+It also supports easily pluggable non-standard win conditions. Currently available are:
+- sort all colors into separate tubes;
+- sort only a selected color into an exclusive tube.
 
 ## Example
+
+```java
+Puzzle puzzle = new Puzzle(new Color[][]{
+    {DARKBLUE, GREEN, DARKGREEN}, // from top to bottom
+    {GREEN, PURPLE, DARKGREEN},
+    {DARKRED, DARKRED, YELLOW},
+    {PURPLE, YELLOW, ORANGE},
+    {ORANGE, ORANGE, DARKGREEN},
+    {GRAY, GRAY, DARKBLUE},
+    {PURPLE, GREEN, DARKRED},
+    {GRAY, DARKBLUE, YELLOW},
+    emptyTube(3),
+    emptyTube(3)
+});
+
+// Solver solver = new SingleThreadedSolver();
+Solver solver = new MultiThreadedSolver();
+
+Solution solution = solver.solve(puzzle);
+```
+
+Output:
 
 ```
 Solution 1: 23 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 3-4, 1-3, 1-9, 1-2, 4-1, 4-1, 5-4, 5-4, 5-2, 6-5, 6-5, 3-6, 8-3, 8-6, 3-5, 8-1]
