@@ -9,7 +9,7 @@ public class Application {
     public static void main(String[] args) {
 //        Puzzle puzzle = Puzzles.AUG18_EASY;
 //        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
-        Puzzle puzzle = Puzzles.AUG22_MEDIUM; // slow
+        Puzzle puzzle = Puzzles.AUG22_MEDIUM;
 
         PrintStream out = System.out;
 

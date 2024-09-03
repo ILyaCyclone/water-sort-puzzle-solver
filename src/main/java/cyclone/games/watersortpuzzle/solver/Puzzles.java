@@ -134,8 +134,7 @@ public class Puzzles {
             emptyTube(3)
     });
 
-    //TODO
-    // [many balls] 23 moves = dev; takes 2 minutes multithreaded
+    // [many balls] 23 moves = dev
     static Puzzle AUG22_MEDIUM = new Puzzle(new Color[][]{
             {YELLOW, ORANGE, GRAY, GRAY},
             {GRAY, DARKGREEN, YELLOW, ORANGE},

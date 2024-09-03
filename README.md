@@ -12,7 +12,7 @@ possible moves.
 
 This project provides an algorithm for solving "water sort puzzle" games, guaranteeing solutions with the minimal
 possible moves while trying its best to be fast.  
-It features a simpler single-threaded variant and a more performant multithreaded variant.
+It features a simpler single-threaded variant and a more performant multi-threaded variant.
 
 It also supports easily pluggable non-standard win conditions. Currently available are:
 - sort all colors into separate tubes;
@@ -170,5 +170,5 @@ Best solution in 19 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 4-3, 5-4, 5-4,
           - |       GRAY |     YELLOW |     ORANGE |  DARKGREEN |   DARKBLUE |    DARKRED |          - |      GREEN |     PURPLE |
           1 |          2 |          3 |          4 |          5 |          6 |          7 |          8 |          9 |         10 |
 ==================================================
-Elapsed 1,99 sec
+Elapsed 0,51 sec
 ```
