@@ -31,14 +31,14 @@ public class SingleThreadedSolver implements Solver {
 //        printer.log(tubes);
 //        System.out.println("=======================================");
 
-        makeMoves(tubes, Collections.emptyList());
+        seekSolutions(tubes, Collections.emptyList());
 
         return Optional.ofNullable(bestSolution)
                 .map(Solution::new)
                 .orElse(null);
     }
 
-    private void makeMoves(Color[][] tubes, List<int[]> previousMoves) {
+    private void seekSolutions(Color[][] tubes, List<int[]> previousMoves) {
         boolean solved = false;
         while (!solved) {
             boolean moveMade = false;
@@ -71,7 +71,7 @@ public class SingleThreadedSolver implements Solver {
                             break;
                         }
                         if (movesMade < bestMovesMade) {
-                            makeMoves(tryNewTubes, moves);
+                            seekSolutions(tryNewTubes, moves);
                         }
 //                        else {
 //                            log(tryNewTubes);

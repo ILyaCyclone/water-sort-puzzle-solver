@@ -3,7 +3,7 @@ package cyclone.games.watersortpuzzle.solver;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -38,7 +38,7 @@ public class MultiThreadedSolver implements Solver {
 //        System.out.println("=======================================");
 
         ForkJoinPool fjp = new ForkJoinPool();
-        fjp.invoke(new MoveTask(tubes, Collections.emptyList()));
+        fjp.invoke(new SeekSolutionsRecursiveAction(tubes, Collections.emptyList()));
         fjp.shutdown();
 
         try {
@@ -57,18 +57,18 @@ public class MultiThreadedSolver implements Solver {
                 .orElse(null);
     }
 
-    private class MoveTask extends RecursiveTask<Void> {
+    private class SeekSolutionsRecursiveAction extends RecursiveAction {
         private final Color[][] tubes;
         private final List<int[]> previousMoves;
 
-        public MoveTask(Color[][] tubes, List<int[]> previousMoves) {
+        public SeekSolutionsRecursiveAction(Color[][] tubes, List<int[]> previousMoves) {
             this.tubes = tubes;
             this.previousMoves = previousMoves;
         }
 
         @Override
-        protected Void compute() {
-            List<MoveTask> subtasks = new ArrayList<>();
+        protected void compute() {
+            List<SeekSolutionsRecursiveAction> subtasks = new ArrayList<>();
 
             for (int i = 0; i < tubes.length; i++) {
                 List<Integer> possibleMoves = tubesManipulator.possibleMoves(tubes, i);
@@ -103,7 +103,7 @@ public class MultiThreadedSolver implements Solver {
                         }
 
                         if (movesMade < bestMovesMade.get()) {
-                            MoveTask subTask = new MoveTask(tryNewTubes, moves);
+                            SeekSolutionsRecursiveAction subTask = new SeekSolutionsRecursiveAction(tryNewTubes, moves);
                             subTask.fork();
                             subtasks.add(subTask);
                         }
@@ -111,11 +111,9 @@ public class MultiThreadedSolver implements Solver {
                 }
             }
 
-            for (MoveTask subtask : subtasks) {
+            for (SeekSolutionsRecursiveAction subtask : subtasks) {
                 subtask.join();
             }
-
-            return null;
         }
     }
 
