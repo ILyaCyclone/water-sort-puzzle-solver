@@ -8,12 +8,11 @@ import java.util.Arrays;
  */
 public record Puzzle(
         Color[][] tubes,
-        WinCondition winCondition,
-        Color soleColor
+        WinCondition winCondition
 ) {
 
     public Puzzle(Color[][] tubes) {
-        this(tubes, WinCondition.STANDARD, null);
+        this(tubes, WinCondition.STANDARD);
     }
 
     @Override
@@ -24,15 +23,13 @@ public record Puzzle(
         Puzzle puzzle = (Puzzle) o;
 
         if (!Arrays.deepEquals(tubes, puzzle.tubes)) return false;
-        if (winCondition != puzzle.winCondition) return false;
-        return soleColor == puzzle.soleColor;
+        return winCondition.equals(puzzle.winCondition);
     }
 
     @Override
     public int hashCode() {
         int result = Arrays.deepHashCode(tubes);
-        result = 31 * result + (winCondition != null ? winCondition.hashCode() : 0);
-        result = 31 * result + (soleColor != null ? soleColor.hashCode() : 0);
+        result = 31 * result + winCondition.hashCode();
         return result;
     }
 }

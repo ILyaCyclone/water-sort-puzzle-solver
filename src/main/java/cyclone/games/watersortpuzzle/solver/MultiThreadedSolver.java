@@ -16,7 +16,8 @@ public class MultiThreadedSolver implements Solver {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();
     private final PuzzleValidator puzzleValidator = new PuzzleValidator();
-    private SolutionCheck solutionCheck;
+
+    private WinCondition winCondition;
 
     private final Map<PuzzleState, Integer> states = new ConcurrentHashMap<>();
     private List<int[]> bestSolution;
@@ -30,7 +31,7 @@ public class MultiThreadedSolver implements Solver {
     public Solution solve(Puzzle puzzle) {
         puzzleValidator.validate(puzzle);
 
-        solutionCheck = SolutionChecks.forPuzzle(puzzle);
+        winCondition = puzzle.winCondition();
 
         Color[][] tubes = puzzle.tubes();
         states.put(new PuzzleState(tubes), 0);
@@ -84,7 +85,7 @@ public class MultiThreadedSolver implements Solver {
                         int movesMade = moves.size();
                         states.put(tryPuzzleState, movesMade);
 
-                        if (solutionCheck.isSolved(tryNewTubes)) {
+                        if (winCondition.check(tryNewTubes)) {
                             if (movesMade < bestMovesMade.get()) {
                                 // Update bestMovesMade if the current solution is better
                                 bestMovesMade.getAndUpdate(existingBest -> Math.min(existingBest, movesMade));
