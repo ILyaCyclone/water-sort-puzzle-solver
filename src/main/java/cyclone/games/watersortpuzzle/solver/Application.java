@@ -13,7 +13,6 @@ public class Application {
 //        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
 
         PrintStream out = System.out;
-        TubesFormatter tubesFormatter = new ColoredTubesFormatter();
 
 //        Solver solver = new SingleThreadedSolver();
         Solver solver = new MultiThreadedSolver();
@@ -31,24 +30,13 @@ public class Application {
         }
 
         List<int[]> moves = solution.moves();
-        TubesManipulator tubesManipulator = new TubesManipulator();
         out.println("==================================================");
         out.println("Best solution in " + moves.size() + " moves: [" +
                 moves.stream().map(fromto -> (fromto[0] + 1) + "-" + (fromto[1] + 1))
                         .collect(Collectors.joining(", ")) + ']');
-        Color[][] tubes = puzzle.tubes();
 
-        out.println(tubesFormatter.format(tubes));
-
-        Color[][] logTubes = Utils.deepCopy(tubes);
-        for (int logMoveIndex = 0; logMoveIndex < moves.size(); logMoveIndex++) {
-            int[] fromto = moves.get(logMoveIndex);
-            out.println((logMoveIndex + 1) + ". move " + (fromto[0] + 1) + " to " + (fromto[1] + 1));
-            logTubes = tubesManipulator.makeAMove(logTubes, fromto[1], fromto[0]);
-
-            out.println("--------------------------------------------------");
-            out.println(tubesFormatter.format(logTubes));
-        }
+        String replay = new Replay().replay(puzzle, moves);
+        out.println(replay);
         out.println("==================================================");
         out.println("Elapsed %.2f sec".formatted(elapsedSeconds));
     }
