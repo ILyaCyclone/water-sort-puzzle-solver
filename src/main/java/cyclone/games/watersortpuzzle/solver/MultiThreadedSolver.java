@@ -19,7 +19,7 @@ public class MultiThreadedSolver implements Solver {
 
     private WinCondition winCondition;
 
-    private final Map<PuzzleState, Integer> states = new ConcurrentHashMap<>();
+    private final Map<TubesState, Integer> states = new ConcurrentHashMap<>();
     private List<int[]> bestSolution;
     private final AtomicInteger bestMovesMade = new AtomicInteger(Integer.MAX_VALUE);
     private int solutions = 0;
@@ -34,7 +34,7 @@ public class MultiThreadedSolver implements Solver {
         winCondition = puzzle.winCondition();
 
         Color[][] tubes = puzzle.tubes();
-        states.put(new PuzzleState(tubes), 0);
+        states.put(new TubesState(tubes), 0);
 
 //        System.out.println(tubesFormatter.format(tubes));
 //        System.out.println("=======================================");
@@ -76,14 +76,14 @@ public class MultiThreadedSolver implements Solver {
                 List<Integer> possibleMoves = tubesManipulator.possibleMoves(tubes, i);
                 for (Integer possibleMove : possibleMoves) {
                     Color[][] tryNewTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
-                    PuzzleState tryPuzzleState = new PuzzleState(tryNewTubes);
+                    TubesState tryTubesState = new TubesState(tryNewTubes);
 
-                    if (!states.containsKey(tryPuzzleState) || states.get(tryPuzzleState) > previousMoves.size() + 1) {
+                    if (!states.containsKey(tryTubesState) || states.get(tryTubesState) > previousMoves.size() + 1) {
                         List<int[]> moves = new LinkedList<>(previousMoves);
                         int[] move = {i, possibleMove};
                         moves.add(move);
                         int movesMade = moves.size();
-                        states.put(tryPuzzleState, movesMade);
+                        states.put(tryTubesState, movesMade);
 
                         if (winCondition.check(tryNewTubes)) {
                             if (movesMade < bestMovesMade.get()) {

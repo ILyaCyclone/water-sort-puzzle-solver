@@ -14,7 +14,7 @@ public class SingleThreadedSolver implements Solver {
 
     private WinCondition winCondition;
 
-    private final Map<PuzzleState, Integer> states = new HashMap<>();
+    private final Map<TubesState, Integer> states = new HashMap<>();
     private List<int[]> bestSolution;
     private int bestMovesMade = Integer.MAX_VALUE;
     private int solutions = 0;
@@ -27,7 +27,7 @@ public class SingleThreadedSolver implements Solver {
         winCondition = puzzle.winCondition();
 
         Color[][] tubes = puzzle.tubes();
-        states.put(new PuzzleState(tubes), 0);
+        states.put(new TubesState(tubes), 0);
 
 //        printer.log(tubes);
 //        System.out.println("=======================================");
@@ -47,13 +47,13 @@ public class SingleThreadedSolver implements Solver {
                 List<Integer> possibleMoves = tubesManipulator.possibleMoves(tubes, i);
                 for (Integer possibleMove : possibleMoves) {
                     Color[][] tryNewTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
-                    PuzzleState tryPuzzleState = new PuzzleState(tryNewTubes);
-                    if (!states.containsKey(tryPuzzleState) || states.get(tryPuzzleState) > previousMoves.size() + 1) {
+                    TubesState tryTubesState = new TubesState(tryNewTubes);
+                    if (!states.containsKey(tryTubesState) || states.get(tryTubesState) > previousMoves.size() + 1) {
                         moveMade = true;
                         List<int[]> moves = new LinkedList<>(previousMoves);
                         moves.add(new int[]{i, possibleMove});
                         int movesMade = moves.size();
-                        states.put(tryPuzzleState, movesMade);
+                        states.put(tryTubesState, movesMade);
 //                log(tubes);
 //                System.out.println(movesMade + ". move " + (i + 1) + " to " + (possibleMove + 1));
 //                System.out.println("----------------------------------------");
