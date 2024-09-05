@@ -12,11 +12,10 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class MultiThreadedSolverTest {
 
-    Solver solver = new MultiThreadedSolver();
-
     @ParameterizedTest
     @MethodSource("puzzlesProvider")
     void solve(Puzzle puzzle, int expectedMovesCount) {
+        Solver solver = new MultiThreadedSolver();
         Solution solution = solver.solve(puzzle);
         int actualMovesCount = solution.moves().size();
         Assertions.assertEquals(expectedMovesCount, actualMovesCount, "moves count mismatch");
