@@ -22,7 +22,7 @@ public class Puzzles {
             {GRAY, GRAY, PURPLE, WHITE, DARKRED, DARKRED},
             emptyTube(6),
             emptyTube(6),
-    }, WinCondition.SOLE_COLOR, DARKRED);
+    }, new SoleColorWinCondition(DARKRED));
 
     // 40 moves < 45 dev
     public static final Puzzle AUG13_CHALLENGE = new Puzzle(new Color[][]{

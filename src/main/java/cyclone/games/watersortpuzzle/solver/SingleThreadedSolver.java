@@ -11,7 +11,8 @@ public class SingleThreadedSolver implements Solver {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();
     private final PuzzleValidator puzzleValidator = new PuzzleValidator();
-    private SolutionCheck solutionCheck;
+
+    private WinCondition winCondition;
 
     private final Map<PuzzleState, Integer> states = new HashMap<>();
     private List<int[]> bestSolution;
@@ -23,7 +24,7 @@ public class SingleThreadedSolver implements Solver {
     public Solution solve(Puzzle puzzle) {
         puzzleValidator.validate(puzzle);
 
-        solutionCheck = SolutionChecks.forPuzzle(puzzle);
+        winCondition = puzzle.winCondition();
 
         Color[][] tubes = puzzle.tubes();
         states.put(new PuzzleState(tubes), 0);
@@ -56,7 +57,7 @@ public class SingleThreadedSolver implements Solver {
 //                log(tubes);
 //                System.out.println(movesMade + ". move " + (i + 1) + " to " + (possibleMove + 1));
 //                System.out.println("----------------------------------------");
-                        if (solutionCheck.isSolved(tryNewTubes)) {
+                        if (winCondition.check(tryNewTubes)) {
 //                    log(tryNewTubes);
                             solved = true;
                             if (movesMade < bestMovesMade) {

@@ -5,14 +5,23 @@ import java.util.Arrays;
 import static cyclone.games.watersortpuzzle.solver.Color.EMPTY;
 
 /**
- * Check STANDARD win condition.
+ * Standard win condition.
+ * All colors in separate tubes.
  */
-public class StandardSolutionCheck implements SolutionCheck {
+public class StandardWinCondition implements WinCondition {
 
-    private final TubesManipulator tubesManipulator = new TubesManipulator();
+    private final TubesManipulator tubesManipulator;
+
+    public StandardWinCondition() {
+        this(new TubesManipulator());
+    }
+
+    public StandardWinCondition(TubesManipulator tubesManipulator) {
+        this.tubesManipulator = tubesManipulator;
+    }
 
     @Override
-    public boolean isSolved(Color[][] tubes) {
+    public boolean check(Color[][] tubes) {
         int capacity = tubes[0].length;
 
         for (Color[] tube : tubes) {
