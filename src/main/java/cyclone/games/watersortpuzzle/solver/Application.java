@@ -13,7 +13,7 @@ public class Application {
 //        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
 
         PrintStream out = System.out;
-        TubesFormatter tubesFormatter = new TubesFormatter();
+        TubesFormatter tubesFormatter = new ColoredTubesFormatter();
 
 //        Solver solver = new SingleThreadedSolver();
         Solver solver = new MultiThreadedSolver();
