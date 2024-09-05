@@ -10,7 +10,7 @@ import static cyclone.games.watersortpuzzle.solver.Color.*;
 class TubesManipulatorTest {
 
     private final TubesManipulator tubesManipulator = new TubesManipulator();
-    private final TubesFormatter tubesFormatter = new TubesFormatter();
+    private final TubesFormatter tubesFormatter = new ColoredTubesFormatter();
 
     @Test
     void makeAMove() {
