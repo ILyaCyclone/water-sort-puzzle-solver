@@ -35,7 +35,7 @@ public class MultiThreadedSolver implements Solver {
         Color[][] tubes = puzzle.tubes();
         states.put(new PuzzleState(tubes), 0);
 
-//        printer.log(tubes);
+//        System.out.println(tubesFormatter.format(tubes));
 //        System.out.println("=======================================");
 
         ForkJoinPool fjp = new ForkJoinPool();

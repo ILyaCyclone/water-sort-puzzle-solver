@@ -3,8 +3,6 @@ package cyclone.games.watersortpuzzle.solver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +10,8 @@ import static cyclone.games.watersortpuzzle.solver.Color.*;
 
 class TubesManipulatorTest {
 
-    private TubesManipulator tubesManipulator = new TubesManipulator();
+    private final TubesManipulator tubesManipulator = new TubesManipulator();
+    private final TubesFormatter tubesFormatter = new TubesFormatter();
 
     @Test
     void makeAMove() {
@@ -30,8 +29,8 @@ class TubesManipulatorTest {
         boolean actualMatchesExpected = Arrays.deepEquals(expectedTubes, actualTubes);
 
         Assertions.assertTrue(actualMatchesExpected, () -> {
-            String expectedTubesString = tubesToString(expectedTubes);
-            String actualTubesString = tubesToString(actualTubes);
+            String expectedTubesString = tubesFormatter.format(expectedTubes);
+            String actualTubesString = tubesFormatter.format(actualTubes);
             return "Tubes mismatch. Expected:\n" + expectedTubesString + "\nbut was:\n" + actualTubesString;
         });
     }
@@ -52,8 +51,8 @@ class TubesManipulatorTest {
         boolean originalNotModified = Arrays.deepEquals(tubes, tubesBackup);
 
         Assertions.assertTrue(originalNotModified, () -> {
-            String expectedTubesString = tubesToString(tubesBackup);
-            String actualTubesString = tubesToString(tubes);
+            String expectedTubesString = tubesFormatter.format(tubesBackup);
+            String actualTubesString = tubesFormatter.format(tubes);
             return "Original tubes should not be modified. Expected:\n" + expectedTubesString + "\nbut was:\n" + actualTubesString;
         });
     }
@@ -142,16 +141,6 @@ class TubesManipulatorTest {
 
         Assertions.assertTrue(!possibleMoves.isEmpty() && possibleMoves.get(0) == 1,
                 "Should have move from 0 to 1, but was: " + possibleMoves);
-    }
-
-    private String tubesToString(Color[][] tubes) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            new Printer(baos).log(tubes);
-            return baos.toString();
-        } catch (IOException e) {
-            System.err.println("Could not print tubes: " + e);
-        }
-        return Arrays.deepToString(tubes);
     }
 
 }

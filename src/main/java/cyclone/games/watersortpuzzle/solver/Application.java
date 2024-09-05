@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 
 public class Application {
 
+
     public static void main(String[] args) {
-//        Puzzle puzzle = Puzzles.AUG18_EASY;
+        Puzzle puzzle = Puzzles.AUG18_EASY;
 //        Puzzle puzzle = Puzzles.AUG22_MEDIUM;
-        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
+//        Puzzle puzzle = Puzzles.AUG11_CHALLENGE; // sole color
 
         PrintStream out = System.out;
+        TubesFormatter tubesFormatter = new TubesFormatter();
 
 //        Solver solver = new SingleThreadedSolver();
         Solver solver = new MultiThreadedSolver();
@@ -36,8 +38,7 @@ public class Application {
                         .collect(Collectors.joining(", ")) + ']');
         Color[][] tubes = puzzle.tubes();
 
-        Printer printer = new Printer(out);
-        printer.log(tubes);
+        out.println(tubesFormatter.format(tubes));
 
         Color[][] logTubes = Utils.deepCopy(tubes);
         for (int logMoveIndex = 0; logMoveIndex < moves.size(); logMoveIndex++) {
@@ -46,7 +47,7 @@ public class Application {
             logTubes = tubesManipulator.makeAMove(logTubes, fromto[1], fromto[0]);
 
             out.println("--------------------------------------------------");
-            printer.log(logTubes);
+            out.println(tubesFormatter.format(logTubes));
         }
         out.println("==================================================");
         out.println("Elapsed %.2f sec".formatted(elapsedSeconds));
