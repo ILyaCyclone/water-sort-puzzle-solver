@@ -6,7 +6,7 @@
 
   <groupId>cyclone.games</groupId>
   <artifactId>water-sort-puzzle-solver</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
 
   <name>Water Sort Puzzle Solver</name>
   <description>An algorithm for solving "water sort puzzle" games.</description>
