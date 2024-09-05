@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * State of puzzle tubes, ignoring tubes order.
+ * State of tubes, ignoring tubes order.
  */
-public record PuzzleState(Color[][] tubes) {
+public record TubesState(Color[][] tubes) {
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PuzzleState that = (PuzzleState) o;
+        TubesState that = (TubesState) o;
 
         List<Integer> thisTubesHashes = Arrays.stream(this.tubes)
                 .map(Arrays::hashCode)
