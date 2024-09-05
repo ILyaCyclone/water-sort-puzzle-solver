@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * State of puzzle tubes, ignoring tubes order.
+ */
 public record PuzzleState(Color[][] tubes) {
 
     @Override

@@ -12,6 +12,12 @@ import static cyclone.games.watersortpuzzle.solver.Color.EMPTY;
  */
 public class TubesManipulator {
 
+    /**
+     * Move one unit from {@code fromTube} to {@code toTube}. 0-based indexes;
+     * Does not modify original {@code tubes}.
+     *
+     * @return new state of tubes.
+     */
     public Color[][] makeAMove(Color[][] tubes, int toTube, int fromTube) {
         Color[][] tryNewTubes = Utils.deepCopy(tubes);
         Color color = null;
@@ -37,6 +43,11 @@ public class TubesManipulator {
         return tryNewTubes;
     }
 
+    /**
+     * Find possible moves from {@code tubeIndex}.
+     *
+     * @return tubes' indexes, available for a move (0-based).
+     */
     public List<Integer> possibleMoves(Color[][] tubes, int tubeIndex) {
         Color[] tube = tubes[tubeIndex];
         int capacity = tubes[0].length;
