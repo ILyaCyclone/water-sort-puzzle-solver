@@ -23,6 +23,7 @@ public class MultiThreadedSolver implements Solver {
     private final AtomicInteger bestMovesMade = new AtomicInteger(Integer.MAX_VALUE);
     private int solutions = 0;
 
+    private static final boolean outputIntermediateSolutions = true;
     private static final Object stdoutLock = new Object();
 
     @Override
@@ -91,10 +92,12 @@ public class MultiThreadedSolver implements Solver {
                                     if (movesMade == bestMovesMade.get()) {
                                         solutions++;
                                         bestSolution = new LinkedList<>(moves);
-                                        synchronized (stdoutLock) {
-                                            System.out.println("Solution " + solutions + ": " + movesMade + " moves: [" +
-                                                    moves.stream().map(fromto -> (fromto[0] + 1) + "-" + (fromto[1] + 1))
-                                                            .collect(Collectors.joining(", ")) + ']');
+                                        if (outputIntermediateSolutions) {
+                                            synchronized (stdoutLock) {
+                                                System.out.println("Solution " + solutions + ": " + movesMade + " moves: [" +
+                                                        moves.stream().map(fromto -> (fromto[0] + 1) + "-" + (fromto[1] + 1))
+                                                                .collect(Collectors.joining(", ")) + ']');
+                                            }
                                         }
                                     }
                                 }

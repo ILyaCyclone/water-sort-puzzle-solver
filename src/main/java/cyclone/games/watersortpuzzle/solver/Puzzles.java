@@ -12,7 +12,7 @@ public class Puzzles {
     private Puzzles() {
     }
 
-    static Puzzle AUG11_CHALLENGE = new Puzzle(new Color[][]{
+    public static final Puzzle AUG11_CHALLENGE = new Puzzle(new Color[][]{
             {YELLOW, DARKPURPLE, GREEN, DARKPURPLE, WHITE, GREEN},
             {GRAY, WHITE, WHITE, PURPLE, WHITE, DARKRED},
             {GRAY, WHITE, YELLOW, GREEN, PURPLE, DARKRED},
@@ -25,7 +25,7 @@ public class Puzzles {
     }, WinCondition.SOLE_COLOR, DARKRED);
 
     // 40 moves < 45 dev
-    static Puzzle AUG13_CHALLENGE = new Puzzle(new Color[][]{
+    public static final Puzzle AUG13_CHALLENGE = new Puzzle(new Color[][]{
             {GRAY, GRAY, GREEN, DARKRED, GRAY, GRAY},
             {DARKBLUE, DARKPURPLE, DARKBLUE, DARKBLUE, DARKPURPLE, DARKBLUE},
             {PURPLE, DARKRED, GRAY, PURPLE, DARKPURPLE, PURPLE},
@@ -38,7 +38,7 @@ public class Puzzles {
     });
 
     // 22 moves = dev
-    static Puzzle AUG17_MEDIUM = new Puzzle(new Color[][]{
+    public static final Puzzle AUG17_MEDIUM = new Puzzle(new Color[][]{
             {GREEN, DARKPURPLE, GREEN},
             {RED, YELLOW, DARKGREEN},
             {YELLOW, YELLOW, ORANGE},
@@ -53,7 +53,7 @@ public class Puzzles {
     });
 
     // aug 18, easy = 19 moves < 20 dev
-    static Puzzle AUG18_EASY = new Puzzle(new Color[][]{
+    public static final Puzzle AUG18_EASY = new Puzzle(new Color[][]{
             {DARKBLUE, GREEN, DARKGREEN},
             {GREEN, PURPLE, DARKGREEN},
             {DARKRED, DARKRED, YELLOW},
@@ -67,7 +67,7 @@ public class Puzzles {
     });
 
     // aug 20 easy = 18 moves = 18 dev
-    static Puzzle AUG20_EASY = new Puzzle(new Color[][]{
+    public static final Puzzle AUG20_EASY = new Puzzle(new Color[][]{
             {ORANGE, BLUE, GREEN},
             {GREEN, DARKPURPLE, DARKRED},
             {DARKRED, ORANGE, BLUE},
@@ -81,7 +81,7 @@ public class Puzzles {
     });
 
     // aug 18, medium = 22 moves = dev
-    static Puzzle AUG18_MEDIUM = new Puzzle(new Color[][]{
+    public static final Puzzle AUG18_MEDIUM = new Puzzle(new Color[][]{
             {RED, PURPLE, WHITE},
             {PURPLE, RED, DARKBLUE},
             {WHITE, BLUE, RED},
@@ -96,7 +96,7 @@ public class Puzzles {
     });
 
     // aug 20 challenge = 33 moves = 33 dev
-    static Puzzle AUG20_CHALLENGE = new Puzzle(new Color[][]{
+    public static final Puzzle AUG20_CHALLENGE = new Puzzle(new Color[][]{
             {BLUE, GRAY, BLUE, GRAY, DARKBLUE},
             {DARKBLUE, PURPLE, RED, PURPLE, DARKRED},
             {DARKRED, GRAY, RED, RED, YELLOW},
@@ -109,7 +109,7 @@ public class Puzzles {
     });
 
     // [many balls] 17 moves = dev
-    static Puzzle AUG21_EASY = new Puzzle(new Color[][]{
+    public static final Puzzle AUG21_EASY = new Puzzle(new Color[][]{
             {BLUE, GREEN, WHITE},
             {BLUE, BLUE, GRAY},
             {RED, WHITE, RED},
@@ -123,7 +123,7 @@ public class Puzzles {
     });
 
     // 15 moves < dev 16 moves
-    static Puzzle AUG22_EASY = new Puzzle(new Color[][]{
+    public static final Puzzle AUG22_EASY = new Puzzle(new Color[][]{
             {BLUE, RED, PURPLE},
             {RED, RED, YELLOW},
             {BLUE, PURPLE, BLUE},
@@ -135,7 +135,7 @@ public class Puzzles {
     });
 
     // [many balls] 23 moves = dev
-    static Puzzle AUG22_MEDIUM = new Puzzle(new Color[][]{
+    public static final Puzzle AUG22_MEDIUM = new Puzzle(new Color[][]{
             {YELLOW, ORANGE, GRAY, GRAY},
             {GRAY, DARKGREEN, YELLOW, ORANGE},
             {DARKGREEN, GRAY, ORANGE, DARKGREEN},
@@ -147,7 +147,7 @@ public class Puzzles {
             emptyTube(4)
     });
 
-    static Puzzle WATER_SORT_PUZZLE_24 = new Puzzle(new Color[][]{
+    public static final Puzzle WATER_SORT_PUZZLE_24 = new Puzzle(new Color[][]{
             {GREEN, PURPLE, YELLOW, DARKPURPLE},
             {PURPLE, DARKBLUE, DARKBLUE, YELLOW},
             {GREEN, DARKGREEN, GREEN, DARKGREEN},
@@ -155,6 +155,21 @@ public class Puzzles {
             {DARKGREEN, DARKBLUE, PINK, DARKPURPLE},
             {PINK, DARKPURPLE, DARKPURPLE, YELLOW},
             {PURPLE, PINK, GREEN, PINK},
+            emptyTube(4),
+            emptyTube(4)
+    });
+
+    public static final Puzzle WATER_SORT_PUZZLE_27 = new Puzzle(new Color[][]{
+            {DARKGREEN, BLUE, DARKBLUE, ORANGE},
+            {DARKBLUE, PURPLE, GREEN, DARKGREEN},
+            {BLUE, YELLOW, PINK, YELLOW},
+            {BLUE, ORANGE, PURPLE, PURPLE},
+            {DARKBLUE, GREEN, YELLOW, RED},
+            {PINK, BLUE, GREEN, ORANGE},
+            {DARKGREEN, PINK, DARKBLUE, RED},
+            {RED, PURPLE, PINK, ORANGE},
+            {GREEN, DARKGREEN, YELLOW, RED},
+            emptyTube(4),
             emptyTube(4),
             emptyTube(4)
     });
