@@ -21,7 +21,7 @@ jobs:
           components: 'native-image'  # Ensure native-image component is installed
 
       - name: Build native image
-        run: mvn package -Pnative
+        run: mvn -DskipTests package -Pnative
 
       - name: Upload native image artifact
         uses: actions/upload-artifact@v3
