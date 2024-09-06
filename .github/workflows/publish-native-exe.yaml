@@ -16,9 +16,9 @@ jobs:
       - name: Set up GraalVM
         uses: graalvm/setup-graalvm@v1
         with:
-          graalvm-version: '22.3.0'
-          java-version: '17'
-          components: 'native-image'
+          version: '22.3.0'           # GraalVM version
+          java-version: '17'          # Set Java version
+          components: 'native-image'  # Ensure native-image component is installed
 
       - name: Build native image
         run: mvn package -Pnative
