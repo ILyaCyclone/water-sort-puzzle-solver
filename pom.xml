@@ -100,6 +100,9 @@
                 <phase>package</phase>
               </execution>
             </executions>
+            <configuration>
+              <mainClass>cyclone.games.watersortpuzzle.solver.cli.CLI</mainClass>
+            </configuration>
           </plugin>
         </plugins>
       </build>
