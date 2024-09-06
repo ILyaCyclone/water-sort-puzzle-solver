@@ -1,6 +1,7 @@
 package cyclone.games.watersortpuzzle.solver;
 
 import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
 
 import static cyclone.games.watersortpuzzle.solver.Color.EMPTY;
 
@@ -8,6 +9,17 @@ import static cyclone.games.watersortpuzzle.solver.Color.EMPTY;
  * Ansi colored output tubes as string.
  */
 public class ColoredTubesFormatter implements TubesFormatter {
+
+    public ColoredTubesFormatter() {
+        this(false);
+    }
+
+    public ColoredTubesFormatter(boolean installAnsiCmd) {
+        if (installAnsiCmd && !AnsiConsole.isInstalled()) {
+            AnsiConsole.systemInstall();
+            Runtime.getRuntime().addShutdownHook(new Thread(AnsiConsole::systemUninstall));
+        }
+    }
 
     @Override
     public String format(Color[][] tubes) {
@@ -28,6 +40,12 @@ public class ColoredTubesFormatter implements TubesFormatter {
             stringBuilder.append(" |");
         }
         return stringBuilder.toString();
+    }
+
+    public String format(Color color) {
+        Ansi ansiColor = ansiColor(color);
+        Ansi formatted = ansiColor.format(color.name()).reset();
+        return formatted.toString();
     }
 
     private Ansi ansiColor(Color color) {
