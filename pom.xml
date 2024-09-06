@@ -88,9 +88,9 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.graalvm.nativeimage</groupId>
-            <artifactId>native-image-maven-plugin</artifactId>
-            <version>22.3.0</version>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.10.2</version> <!-- Use the latest version -->
             <executions>
               <execution>
                 <goals>
