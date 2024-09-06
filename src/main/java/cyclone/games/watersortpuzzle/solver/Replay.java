@@ -4,16 +4,20 @@ import java.util.List;
 
 public class Replay {
 
-    private final TubesManipulator tubesManipulator;
     private final TubesFormatter tubesFormatter;
+    private final TubesManipulator tubesManipulator;
 
     public Replay() {
-        this(new TubesManipulator(), new ColoredTubesFormatter());
+        this(new ColoredTubesFormatter());
     }
 
-    public Replay(TubesManipulator tubesManipulator, TubesFormatter tubesFormatter) {
-        this.tubesManipulator = tubesManipulator;
+    public Replay(TubesFormatter tubesFormatter) {
+        this(tubesFormatter, new TubesManipulator());
+    }
+
+    public Replay(TubesFormatter tubesFormatter, TubesManipulator tubesManipulator) {
         this.tubesFormatter = tubesFormatter;
+        this.tubesManipulator = tubesManipulator;
     }
 
     public String replay(Puzzle puzzle, List<int[]> moves) {
