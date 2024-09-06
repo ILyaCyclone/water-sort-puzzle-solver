@@ -93,9 +93,11 @@
             <version>0.10.2</version> <!-- Use the latest version -->
             <executions>
               <execution>
+                <id>build-native</id>
                 <goals>
-                  <goal>build</goal>
+                  <goal>compile-no-fork</goal>
                 </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
