@@ -18,7 +18,44 @@ It also supports easily pluggable non-standard win conditions. Currently availab
 - sort all colors into separate tubes;
 - sort only a selected color into an exclusive tube.
 
-## Example
+## Usage
+
+### CLI
+
+With fancy colors too!
+
+![image](https://github.com/user-attachments/assets/b5a582f7-85e6-449f-9bd6-be9bc6defcf9)
+
+```
+usage: water-sorter-puzzle-solver <action> [options]
+Action is one of:
+- solve - solve the puzzle;
+- replay - replay moves;
+- print - just print the puzzle;
+- colors - list all colors;
+- help - print help;
+- version.
+
+Options:
+ -a,--algorithm <arg>               Choose a solver algorithm. Supported values: "single" - single-threaded solver; "multi" -
+                                    multi-threaded solver.
+                                    Default: multi.
+ -c,--colored-output <true|false>   Colorize the output? Default: true
+    --install-ansi                  Sometimes a console (e.g. Windows CMD) won't support colored output, showing weird symbols
+                                    instead. Turn on this option then. Default: no action.
+ -m,--moves <moves>                 Moves in a form of from-to pairs, 1-based tubes indexes. E.g.: 1-3,2-4,1-2.
+ -p,--puzzle <puzzle>               A puzzle, where colors are represented in a form of integers or color names, each tube written
+                                    top-down. E.g.:
+                                    [1,2,3][4,5,6][0,0,0] - 3 tubes, the first have color (top-down) [1, 2, 3],
+                                    the second [4, 5, 6], the third is an empty tube of 3 capacity.
+                                    Or: [red,green,blue][yellow,white,gray][empty,empty,empty].
+ -w,--win-condition <condition>     Win condition. Supported values: "standard" - standard win condition;
+                                    "sole-color:<color>" - sort only <color> into separate tube, where <color> is an integer or a
+                                    name, representing a color.
+                                    Default: standard.
+```
+
+### Code
 
 ```java
 Puzzle puzzle = new Puzzle(new Color[][]{
