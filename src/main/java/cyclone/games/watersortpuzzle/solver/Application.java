@@ -15,7 +15,8 @@ public class Application {
         PrintStream out = System.out;
 
 //        Solver solver = new SingleThreadedSolver();
-        Solver solver = new MultiThreadedSolver();
+//        Solver solver = new MultiThreadedSolver();
+        Solver solver = new SingleThreadedSolverV2();
 
         long startNano = System.nanoTime();
         Solution solution = solver.solve(puzzle);

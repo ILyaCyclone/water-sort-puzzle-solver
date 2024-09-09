@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * Main business logic.
- * Solve puzzle using multiple threads.
+ * Solve puzzle using multiple threads, depth-first.
  */
 public class MultiThreadedSolver implements Solver {
 

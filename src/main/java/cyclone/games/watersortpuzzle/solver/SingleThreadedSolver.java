@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 /**
  * Main business logic.
- * Solve puzzle using single thread.
+ * Solve puzzle using single thread, depth-first.
  */
 public class SingleThreadedSolver implements Solver {
 
