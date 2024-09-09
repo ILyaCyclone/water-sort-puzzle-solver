@@ -6,6 +6,6 @@ public class CLIActionVersion implements CLIAction {
 
     @Override
     public void process(CommandLine cmd) {
-        System.out.println("1.2.0");
+        System.out.println("1.3.0-SNAPSHOT");
     }
 }
