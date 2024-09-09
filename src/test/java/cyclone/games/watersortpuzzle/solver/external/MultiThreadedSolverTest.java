@@ -12,21 +12,20 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class MultiThreadedSolverTest {
 
-    @ParameterizedTest(name = "{2}")
+    @ParameterizedTest(name = "{0}")
     @MethodSource("puzzlesProvider")
-    void solve(Puzzle puzzle, int expectedMovesCount, String puzzleName) {
+    void solve(String puzzleName, Puzzle puzzle, int expectedMovesCount) {
         Solver solver = new MultiThreadedSolver();
         Solution solution = solver.solve(puzzle);
+
         int actualMovesCount = solution.moves().size();
+
         Assertions.assertEquals(expectedMovesCount, actualMovesCount, "moves count mismatch");
     }
 
     static Stream<Arguments> puzzlesProvider() {
-        return Stream.of(
-                arguments(Puzzles.AUG18_EASY, 19, "AUG18_EASY"),
-                arguments(Puzzles.AUG22_MEDIUM, 23, "AUG22_MEDIUM"),
-                arguments(Puzzles.AUG11_CHALLENGE, 39, "AUG11_CHALLENGE") // sole color
-        );
+        return Stream.of(TestPuzzles.AUG18_EASY, TestPuzzles.AUG22_MEDIUM, TestPuzzles.AUG11_CHALLENGE)
+                .map(testPuzzle -> arguments(testPuzzle.name(), testPuzzle.puzzle(), testPuzzle.expectedMovesCount()));
     }
 
 }
