@@ -12,18 +12,15 @@ public class SingleThreadedSolverV2 implements Solver {
     private final TubesManipulator tubesManipulator = new TubesManipulator();
     private final PuzzleValidator puzzleValidator = new PuzzleValidator();
     private final Set<TubesState> states = new HashSet<>();
-    private WinCondition winCondition;
 
     @Override
     public Solution solve(Puzzle puzzle) {
         puzzleValidator.validate(puzzle);
 
-        winCondition = puzzle.winCondition();
-
         Color[][] tubes = puzzle.tubes();
         states.add(new TubesState(tubes));
 
-        List<SolutionLevel> solutionLevels = List.of(new SolutionLevel(tubes, Collections.emptyList()));
+        List<SolutionLevel> solutionLevels = List.of(new SolutionLevel(puzzle, Collections.emptyList()));
 
         return seekSolution(solutionLevels);
     }
@@ -31,7 +28,9 @@ public class SingleThreadedSolverV2 implements Solver {
     private Solution seekSolution(List<SolutionLevel> solutionLevels) {
         List<SolutionLevel> newSolutionLevels = new ArrayList<>();
         for (SolutionLevel solutionLevel : solutionLevels) {
-            Color[][] tubes = solutionLevel.tubes();
+            Puzzle puzzle = solutionLevel.puzzle();
+            Color[][] tubes = puzzle.tubes();
+            WinCondition winCondition = puzzle.winCondition();
             List<int[]> previousMoves = solutionLevel.previousMoves();
 
             List<int[]> possibleMoves = IntStream.range(0, tubes.length)
@@ -50,7 +49,7 @@ public class SingleThreadedSolverV2 implements Solver {
                         return new Solution(newMoves);
                     }
 
-                    newSolutionLevels.add(new SolutionLevel(newTubes, newMoves));
+                    newSolutionLevels.add(new SolutionLevel(new Puzzle(newTubes, winCondition), newMoves));
                 }
             }
         }
@@ -62,7 +61,7 @@ public class SingleThreadedSolverV2 implements Solver {
         return seekSolution(newSolutionLevels);
     }
 
-    record SolutionLevel(Color[][] tubes, List<int[]> previousMoves) {
+    record SolutionLevel(Puzzle puzzle, List<int[]> previousMoves) {
     }
 
 }

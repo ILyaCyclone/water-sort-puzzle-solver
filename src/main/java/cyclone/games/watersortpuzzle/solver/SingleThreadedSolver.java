@@ -12,8 +12,6 @@ public class SingleThreadedSolver implements Solver {
     private final TubesManipulator tubesManipulator = new TubesManipulator();
     private final PuzzleValidator puzzleValidator = new PuzzleValidator();
 
-    private WinCondition winCondition;
-
     private final Map<TubesState, Integer> states = new HashMap<>();
     private List<int[]> bestSolution;
     private int bestMovesMade = Integer.MAX_VALUE;
@@ -24,41 +22,39 @@ public class SingleThreadedSolver implements Solver {
     public Solution solve(Puzzle puzzle) {
         puzzleValidator.validate(puzzle);
 
-        winCondition = puzzle.winCondition();
-
         Color[][] tubes = puzzle.tubes();
         states.put(new TubesState(tubes), 0);
 
 //        printer.log(tubes);
 //        System.out.println("=======================================");
 
-        seekSolutions(tubes, Collections.emptyList());
+        seekSolutions(puzzle, Collections.emptyList());
 
         return Optional.ofNullable(bestSolution)
                 .map(Solution::new)
                 .orElse(null);
     }
 
-    private void seekSolutions(Color[][] tubes, List<int[]> previousMoves) {
+    private void seekSolutions(Puzzle puzzle, List<int[]> previousMoves) {
+        Color[][] tubes = puzzle.tubes();
+        WinCondition winCondition = puzzle.winCondition();
+
         boolean solved = false;
         while (!solved) {
             boolean moveMade = false;
             for (int i = 0; i < tubes.length; i++) {
                 List<Integer> possibleMoves = tubesManipulator.possibleMoves(tubes, i);
                 for (Integer possibleMove : possibleMoves) {
-                    Color[][] tryNewTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
-                    TubesState tryTubesState = new TubesState(tryNewTubes);
-                    if (!states.containsKey(tryTubesState) || states.get(tryTubesState) > previousMoves.size() + 1) {
+                    Color[][] newTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
+                    TubesState newTubesState = new TubesState(newTubes);
+                    if (!states.containsKey(newTubesState) || states.get(newTubesState) > previousMoves.size() + 1) {
                         moveMade = true;
                         List<int[]> moves = new LinkedList<>(previousMoves);
                         moves.add(new int[]{i, possibleMove});
                         int movesMade = moves.size();
-                        states.put(tryTubesState, movesMade);
-//                log(tubes);
-//                System.out.println(movesMade + ". move " + (i + 1) + " to " + (possibleMove + 1));
-//                System.out.println("----------------------------------------");
-                        if (winCondition.check(tryNewTubes)) {
-//                    log(tryNewTubes);
+                        states.put(newTubesState, movesMade);
+
+                        if (winCondition.check(newTubes)) {
                             solved = true;
                             if (movesMade < bestMovesMade) {
                                 solutions++;
@@ -72,10 +68,10 @@ public class SingleThreadedSolver implements Solver {
                             break;
                         }
                         if (movesMade < bestMovesMade) {
-                            seekSolutions(tryNewTubes, moves);
+                            seekSolutions(new Puzzle(newTubes, winCondition), moves);
                         }
 //                        else {
-//                            log(tryNewTubes);
+//                            log(newTubes);
 //                            System.out.println("Too many moves, abandon");
 //                            System.out.println("==================================================");
 //                        }

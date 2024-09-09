@@ -17,8 +17,6 @@ public class MultiThreadedSolver implements Solver {
     private final TubesManipulator tubesManipulator = new TubesManipulator();
     private final PuzzleValidator puzzleValidator = new PuzzleValidator();
 
-    private WinCondition winCondition;
-
     private final Map<TubesState, Integer> states = new ConcurrentHashMap<>();
     private List<int[]> bestSolution;
     private final AtomicInteger bestMovesMade = new AtomicInteger(Integer.MAX_VALUE);
@@ -31,8 +29,6 @@ public class MultiThreadedSolver implements Solver {
     public Solution solve(Puzzle puzzle) {
         puzzleValidator.validate(puzzle);
 
-        winCondition = puzzle.winCondition();
-
         Color[][] tubes = puzzle.tubes();
         states.put(new TubesState(tubes), 0);
 
@@ -40,7 +36,7 @@ public class MultiThreadedSolver implements Solver {
 //        System.out.println("=======================================");
 
         ForkJoinPool fjp = new ForkJoinPool();
-        fjp.invoke(new SeekSolutionsRecursiveAction(tubes, Collections.emptyList()));
+        fjp.invoke(new SeekSolutionsRecursiveAction(puzzle, Collections.emptyList()));
         fjp.shutdown();
 
         try {
@@ -60,32 +56,34 @@ public class MultiThreadedSolver implements Solver {
     }
 
     private class SeekSolutionsRecursiveAction extends RecursiveAction {
-        private final Color[][] tubes;
+        private final Puzzle puzzle;
         private final List<int[]> previousMoves;
 
-        public SeekSolutionsRecursiveAction(Color[][] tubes, List<int[]> previousMoves) {
-            this.tubes = tubes;
+        public SeekSolutionsRecursiveAction(Puzzle puzzle, List<int[]> previousMoves) {
+            this.puzzle = puzzle;
             this.previousMoves = previousMoves;
         }
 
         @Override
         protected void compute() {
-            List<SeekSolutionsRecursiveAction> subtasks = new ArrayList<>();
+            Color[][] tubes = puzzle.tubes();
+            WinCondition winCondition = puzzle.winCondition();
 
+            List<SeekSolutionsRecursiveAction> subtasks = new ArrayList<>();
             for (int i = 0; i < tubes.length; i++) {
                 List<Integer> possibleMoves = tubesManipulator.possibleMoves(tubes, i);
                 for (Integer possibleMove : possibleMoves) {
-                    Color[][] tryNewTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
-                    TubesState tryTubesState = new TubesState(tryNewTubes);
+                    Color[][] newTubes = tubesManipulator.makeAMove(tubes, possibleMove, i);
+                    TubesState newTubesState = new TubesState(newTubes);
 
-                    if (!states.containsKey(tryTubesState) || states.get(tryTubesState) > previousMoves.size() + 1) {
+                    if (!states.containsKey(newTubesState) || states.get(newTubesState) > previousMoves.size() + 1) {
                         List<int[]> moves = new LinkedList<>(previousMoves);
                         int[] move = {i, possibleMove};
                         moves.add(move);
                         int movesMade = moves.size();
-                        states.put(tryTubesState, movesMade);
+                        states.put(newTubesState, movesMade);
 
-                        if (winCondition.check(tryNewTubes)) {
+                        if (winCondition.check(newTubes)) {
                             if (movesMade < bestMovesMade.get()) {
                                 // Update bestMovesMade if the current solution is better
                                 bestMovesMade.getAndUpdate(existingBest -> Math.min(existingBest, movesMade));
@@ -107,7 +105,7 @@ public class MultiThreadedSolver implements Solver {
                         }
 
                         if (movesMade < bestMovesMade.get()) {
-                            SeekSolutionsRecursiveAction subTask = new SeekSolutionsRecursiveAction(tryNewTubes, moves);
+                            SeekSolutionsRecursiveAction subTask = new SeekSolutionsRecursiveAction(new Puzzle(newTubes, winCondition), moves);
                             subTask.fork();
                             subtasks.add(subTask);
                         }
