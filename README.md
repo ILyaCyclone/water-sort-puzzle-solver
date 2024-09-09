@@ -87,14 +87,15 @@ Puzzle puzzle = new Puzzle(new Color[][]{
 Solver solver = new SingleThreadedSolverV2();
 
 long startNano = System.nanoTime();
+
 Solution solution = solver.solve(puzzle);
 
-long elapsedNano = System.nanoTime() - startNano;
-float elapsedSeconds = elapsedNano / 1_000_000_000f;
+long endNano = System.nanoTime();
 
 Replay replay = new Replay();
 System.out.println(replay.replay(puzzle, solution.moves()));
-System.out.printf("Elapsed %.2f sec".formatted(elapsedSeconds));
+
+System.out.printf("Elapsed %.2f sec".formatted((endNano - startNano)/1_000_000_000f));
 ```
 
 Output:
