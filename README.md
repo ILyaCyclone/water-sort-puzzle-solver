@@ -4,15 +4,18 @@ An algorithm for solving "water sort puzzle" games.
 
 ## What is "water sort puzzle" game?
 
-"Water sort puzzle" games are a popular type of game, mostly found on mobile devices or browser-based platforms, where
-you need to sort colored liquids or balls into separate tubes. The goal is usually to solve the puzzle in the fewest
-possible moves.
+"Water sort puzzle" games are a popular type of games, mostly found on mobile devices or browser-based platforms, where
+you need to sort colored liquids or balls into separate tubes. The goal is usually to sort all colors into separate tubes
+in the fewest possible moves.
 
 ## What is this project?
 
-This project provides an algorithm for solving "water sort puzzle" games, guaranteeing solutions with the minimal
+This project provides algorithms for solving "water sort puzzle" games, guaranteeing solutions with the minimal
 possible moves while trying its best to be fast.  
-It features a simpler single-threaded variant and a more performant multi-threaded variant.
+Available algorithms are:
+- single-threaded, depth-first;
+- multi-threaded, depth-first;
+- single-threaded, breadth-first (default).
 
 It also supports easily pluggable non-standard win conditions. Currently available are:
 - sort all colors into separate tubes;
@@ -29,30 +32,38 @@ With fancy colors too!
 ```
 usage: water-sorter-puzzle-solver <action> [options]
 Action is one of:
-- solve - solve the puzzle;
-- replay - replay moves;
-- print - just print the puzzle;
-- colors - list all colors;
+- solve - solve the puzzle (required options: puzzle);
+- replay - replay moves (required options: puzzle, moves);
+- print - just print the puzzle (required options: puzzle);
+- list-colors - list supported color names with respective number;
 - help - print help;
-- version.
+- version - print app version.
 
 Options:
- -a,--algorithm <arg>               Choose a solver algorithm. Supported values: "single" - single-threaded solver; "multi" -
-                                    multi-threaded solver.
-                                    Default: multi.
- -c,--colored-output <true|false>   Colorize the output? Default: true
-    --install-ansi                  Sometimes a console (e.g. Windows CMD) won't support colored output, showing weird symbols
-                                    instead. Turn on this option then. Default: no action.
- -m,--moves <moves>                 Moves in a form of from-to pairs, 1-based tubes indexes. E.g.: 1-3,2-4,1-2.
- -p,--puzzle <puzzle>               A puzzle, where colors are represented in a form of integers or color names, each tube written
-                                    top-down. E.g.:
-                                    [1,2,3][4,5,6][0,0,0] - 3 tubes, the first have color (top-down) [1, 2, 3],
-                                    the second [4, 5, 6], the third is an empty tube of 3 capacity.
+ -p,--puzzle <puzzle>               A puzzle, where colors are represented in a form of integers or
+                                    color names, each tube written top-down.
+                                    E.g.: [1,2,3][4,5,6][0,0,0] - 3 tubes, the first tube have color
+                                    (top-down) [1, 2, 3], the second tube [4, 5, 6], the third tube is
+                                    empty with capacity of 3.
                                     Or: [red,green,blue][yellow,white,gray][empty,empty,empty].
- -w,--win-condition <condition>     Win condition. Supported values: "standard" - standard win condition;
-                                    "sole-color:<color>" - sort only <color> into separate tube, where <color> is an integer or a
-                                    name, representing a color.
+                                    For color names see "list-colors" action.
+ -w,--win-condition <condition>     Win condition. Supported values:
+                                    - "standard" - all colors into separate tubes;
+                                    - "sole-color:<color>" - sort only <color> into separate tube,
+                                    where <color> is an integer or a name of a color.
                                     Default: standard.
+ -a,--algorithm <arg>               Choose a solver algorithm. Supported values:
+                                    - "single" - single-threaded solver, depth-first;
+                                    - "multi" - multi-threaded solver, depth-first;
+                                    - "singleV2" - single-threaded solver, breadth-first.
+                                    Default: singleV2.
+ -m,--moves <moves>                 Moves in a form of from-to pairs, 1-based tubes indexes. E.g.:
+                                    1-3,2-4,1-2.
+ -c,--colored-output <true|false>   Colorize the output? Default: true
+                                    See also: "install-ansi option.
+    --install-ansi                  Sometimes a console (e.g. Windows CMD) won't support colored
+                                    output, showing weird symbols instead. Turn on this option then.
+                                    Default: no action.
 ```
 
 ### Code
@@ -72,22 +83,23 @@ Puzzle puzzle = new Puzzle(new Color[][]{
 });
 
 // Solver solver = new SingleThreadedSolver();
-Solver solver = new MultiThreadedSolver();
+//Solver solver = new MultiThreadedSolver();
+Solver solver = new SingleThreadedSolverV2();
 
+long startNano = System.nanoTime();
 Solution solution = solver.solve(puzzle);
+
+long elapsedNano = System.nanoTime() - startNano;
+float elapsedSeconds = elapsedNano / 1_000_000_000f;
+
+Replay replay = new Replay();
+System.out.println(replay.replay(puzzle, solution.moves()));
+System.out.printf("Elapsed %.2f sec".formatted(elapsedSeconds));
 ```
 
 Output:
 
 ```
-Solution 1: 23 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 3-4, 1-3, 1-9, 1-2, 4-1, 4-1, 5-4, 5-4, 5-2, 6-5, 6-5, 3-6, 8-3, 8-6, 3-5, 8-1]
-Solution 2: 22 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 3-4, 1-3, 1-9, 1-2, 4-1, 4-1, 5-4, 5-4, 5-2, 6-5, 6-5, 3-6, 8-5, 8-6, 8-1]
-Solution 3: 21 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 3-4, 1-3, 1-9, 1-2, 6-1, 6-1, 3-6, 8-1, 8-6, 4-8, 4-8, 5-4, 5-4, 5-2]
-Solution 4: 20 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 3-4, 6-3, 6-3, 1-6, 1-9, 1-2, 8-3, 8-6, 4-8, 4-8, 5-4, 5-4, 5-2]
-Solution 5: 19 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 4-3, 5-4, 5-4, 2-5, 6-2, 6-2, 1-6, 1-9, 1-5, 8-2, 8-6, 8-3]
-Finished in time
-==================================================
-Best solution in 19 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 4-3, 5-4, 5-4, 2-5, 6-2, 6-2, 1-6, 1-9, 1-5, 8-2, 8-6, 8-3]
    DARKBLUE |      GREEN |    DARKRED |     PURPLE |     ORANGE |       GRAY |     PURPLE |       GRAY |          - |          - |
       GREEN |     PURPLE |    DARKRED |     YELLOW |     ORANGE |       GRAY |      GREEN |   DARKBLUE |          - |          - |
   DARKGREEN |  DARKGREEN |     YELLOW |     ORANGE |  DARKGREEN |   DARKBLUE |    DARKRED |     YELLOW |          - |          - |
@@ -206,6 +218,6 @@ Best solution in 19 moves: [2-9, 2-10, 4-10, 7-10, 7-9, 3-7, 3-7, 4-3, 5-4, 5-4,
           - |       GRAY |     YELLOW |     ORANGE |  DARKGREEN |   DARKBLUE |    DARKRED |          - |      GREEN |     PURPLE |
           - |       GRAY |     YELLOW |     ORANGE |  DARKGREEN |   DARKBLUE |    DARKRED |          - |      GREEN |     PURPLE |
           1 |          2 |          3 |          4 |          5 |          6 |          7 |          8 |          9 |         10 |
-==================================================
-Elapsed 0,51 sec
+Win condition met
+Elapsed 0,30 sec
 ```

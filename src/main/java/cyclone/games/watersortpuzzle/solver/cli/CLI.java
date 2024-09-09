@@ -16,11 +16,11 @@ public class CLI {
                 .longOpt("puzzle")
                 .hasArg()
                 .argName("puzzle")
-                .desc("A puzzle, where colors are represented in a form of integers " +
-                        "or color names, each tube written top-down. " +
-                        "E.g.: [1,2,3][4,5,6][0,0,0] - 3 tubes, the first have color (top-down) [1, 2, 3], the second [4, 5, 6], " +
-                        "the third is an empty tube of 3 capacity. Or: " +
-                        "[red,green,blue][yellow,white,gray][empty,empty,empty]."
+                .desc("""
+                        A puzzle, where colors are represented in a form of integers or color names, each tube written top-down.
+                        E.g.: [1,2,3][4,5,6][0,0,0] - 3 tubes, the first tube have color (top-down) [1, 2, 3], the second tube [4, 5, 6], the third tube is empty with capacity of 3.
+                        Or: [red,green,blue][yellow,white,gray][empty,empty,empty].
+                        For color names see "list-colors" action."""
                 )
                 .type(Color[][].class)
                 .converter(typedParser::parsePuzzleOption)
@@ -32,16 +32,24 @@ public class CLI {
                 .longOpt("win-condition")
                 .hasArg()
                 .argName("condition")
-                .desc("Win condition. Supported values: " +
-                        "\"standard\" - standard win condition; \"sole-color:<color>\" - sort only <color> into separate tube, where " +
-                        "<color> is an integer or a name, representing a color. Default: standard.")
+                .desc("""
+                        Win condition. Supported values:
+                        - "standard" - all colors into separate tubes;
+                        - "sole-color:<color>" - sort only <color> into separate tube, where <color> is an integer or a name of a color.
+                        Default: standard.""")
                 .type(WinCondition.class)
                 .converter(typedParser::parseWinCondition)
                 .build();
         options.addOption(winConditionOption);
 
-        options.addOption("a", "algorithm", true, "Choose a solver algorithm. Supported values: " +
-                "\"single\" - single-threaded solver; \"multi\" - multi-threaded solver. Default: multi.");
+        options.addOption("a", "algorithm", true,
+                """
+                        Choose a solver algorithm. Supported values:
+                        - "single" - single-threaded solver, depth-first;
+                        - "multi" - multi-threaded solver, depth-first;
+                        - "singleV2" - single-threaded solver, breadth-first.
+                         Default: singleV2."""
+        );
 
         Option movesOption = Option.builder()
                 .longOpt("moves")
@@ -60,7 +68,9 @@ public class CLI {
                 .option("c")
                 .argName("true|false")
                 .optionalArg(true)
-                .desc("Colorize the output? Default: true")
+                .desc("""
+                        Colorize the output? Default: true
+                        See also: "install-ansi option.""")
                 .build();
         options.addOption(coloredOption);
 
@@ -91,7 +101,7 @@ public class CLI {
             case "solve" -> new CLIActionSolve(typedParser).process(cmd);
             case "replay" -> new CLIActionReplay(typedParser).process(cmd);
             case "print" -> new CLIActionPrint(typedParser).process(cmd);
-            case "colors" -> new CLIActionListColors(typedParser).process(cmd);
+            case "list-colors" -> new CLIActionListColors(typedParser).process(cmd);
             case "version" -> new CLIActionVersion().process(cmd);
             default -> new CLIActionHelp(options).process(cmd);
         }

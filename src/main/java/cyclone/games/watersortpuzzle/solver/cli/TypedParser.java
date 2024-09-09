@@ -24,15 +24,14 @@ public class TypedParser {
 
     public Solver getSolver(CommandLine cmd) {
         String solverOption = cmd.getOptionValue("solver");
-        Solver solver;
-        if (solverOption == null || solverOption.isEmpty() || "multi".equals(solverOption)) {
-            solver = new MultiThreadedSolver();
-        } else if ("single".equals(solverOption)) {
-            solver = new SingleThreadedSolver();
-        } else {
-            throw new IllegalArgumentException("Illegal parameter value \"solver\": " + solverOption);
-        }
-        return solver;
+        if (solverOption == null || solverOption.isEmpty()) return new SingleThreadedSolverV2();
+
+        return switch (solverOption.toLowerCase()) {
+            case "single" -> new SingleThreadedSolver();
+            case "multi" -> new MultiThreadedSolver();
+            case "singlev2" -> new SingleThreadedSolverV2();
+            default -> throw new IllegalArgumentException("Illegal \"solver\" argument: " + solverOption);
+        };
     }
 
     public List<int[]> getMoves(CommandLine cmd) {
