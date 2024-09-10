@@ -32,3 +32,5 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: target/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
